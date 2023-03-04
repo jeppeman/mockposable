@@ -1,5 +1,6 @@
 import com.jeppeman.mockposable.gradle.MOCKITO
 import com.jeppeman.mockposable.gradle.MOCKK
+import com.jeppeman.mockposable.gradle.COMPOSE_UI
 
 plugins {
     id("com.android.library")
@@ -10,7 +11,7 @@ plugins {
 }
 
 mockposable {
-    plugins = listOf(MOCKK, MOCKITO)
+    plugins = listOf(MOCKK, MOCKITO, COMPOSE_UI)
 }
 
 android {

@@ -4,14 +4,10 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.builders.IrBlockBodyBuilder
-import org.jetbrains.kotlin.ir.builders.irBlockBody
-import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
-import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
@@ -198,26 +194,33 @@ fun IrCall.transformComposeArgs(
 
     val composerType = pluginContext.composerClassSymbol.defaultType.makeNullable()
 
-    if (symbol.owner.valueParameters.none { it.type.makeNullable() == composerType }) {
+    val composerArgIndex = (0 until valueArgumentsCount)
+        .mapNotNull { index -> getValueArgument(index)?.let { index to it } }
+        .find { (_, arg) -> arg.type == composerType }
+        ?.first
+    val composerArgMissing = symbol.owner.valueParameters.none {
+        it.type.makeNullable() == composerType
+    }
+
+    if (composerArgMissing || composerArgIndex == null) {
         // Function has not been transformed with $composer and $changed if we get here.
         pluginError(
             "Composable function\n${symbol.owner.dumpKotlinLike()}was not transformed with ${"\$composer"} and ${"\$changed"} args. This most likely means that the Compose compiler plugin is not on the kotlinc classpath."
         )
     }
 
-    // $composer is always added as second to last argument.
     putValueArgument(
-        valueArgumentsCount - 2,
+        composerArgIndex,
         pluginContext.buildIr(symbol) {
-            composerArgument(getValueArgument(valueArgumentsCount - 2)!!)
+            composerArgument(getValueArgument(composerArgIndex)!!)
         }
     )
 
-    // $changed is always added as the last argument
+    // $changed is always added as following $composer
     putValueArgument(
-        valueArgumentsCount - 1,
+        composerArgIndex + 1,
         pluginContext.buildIr(symbol) {
-            changedArgument(getValueArgument(valueArgumentsCount - 1)!!)
+            changedArgument(getValueArgument(composerArgIndex + 1)!!)
         }
     )
 

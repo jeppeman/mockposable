@@ -5,6 +5,7 @@ include(":mockposable-gradle")
 include(":mockposable-runtime")
 include(":mockposable-runtime:mockposable-runtime-mockk")
 include(":mockposable-runtime:mockposable-runtime-mockito")
+include(":mockposable-runtime:mockposable-runtime-composeui")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
