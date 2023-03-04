@@ -18,14 +18,18 @@ fun <T> everyComposable(
  */
 infix fun <T, B> MockKStubScope<T, B>.answersComposable(
     answer: @Composable MockKAnswerScope<T, B>.(Call) -> T
-): MockKAdditionalAnswerScope<T, B> = answers { call -> runComposableOneShot { answer(call) } }
+): MockKAdditionalAnswerScope<T, B> = answers { call ->
+    runComposableOneShot(true) { answer(call) }
+}
 
 /**
  * @see [MockKAdditionalAnswerScope.andThenAnswer]
  */
 infix fun <T, B> MockKAdditionalAnswerScope<T, B>.andThenComposable(
-    answer: @Composable MockKAnswerScope<T,B>.(Call) -> T
-): MockKAdditionalAnswerScope<T, B> = andThenAnswer { call -> runComposableOneShot { answer(call) } }
+    answer: @Composable MockKAnswerScope<T, B>.(Call) -> T
+): MockKAdditionalAnswerScope<T, B> = andThenAnswer { call ->
+    runComposableOneShot(true) { answer(call) }
+}
 
 /**
  * @see [verify]

@@ -37,14 +37,18 @@ fun <T, R> Stubber.onComposable(mock: T, stubBlock: @Composable T.() -> R) {
  */
 infix fun <T> OngoingStubbing<T>.doAnswerComposable(
     answer: @Composable (InvocationOnMock) -> T?
-): OngoingStubbing<T> = thenAnswer { invocation -> runComposableOneShot { answer(invocation) } }
+): OngoingStubbing<T> = thenAnswer { invocation ->
+    runComposableOneShot(true) { answer(invocation) }
+}
 
 /**
  * @see [Mockito.doAnswer]
  */
 fun <T> doAnswerComposable(
     answer: @Composable (InvocationOnMock) -> T?
-): Stubber = Mockito.doAnswer { invocation -> runComposableOneShot { answer(invocation) } }
+): Stubber = Mockito.doAnswer { invocation ->
+    runComposableOneShot(true) { answer(invocation) }
+}
 
 /**
  * @see [InOrder.verify]

@@ -95,5 +95,9 @@ private val mockPluginDependencyMap: Map<String, Map<String, List<String>>> = ma
     MOCKITO to mapOf(
         "jvm" to MOCKITO_JVM_DEPENDENCIES,
         "android" to MOCKITO_ANDROID_DEPENDENCIES,
+    ),
+    COMPOSE_UI to mapOf(
+        "jvm" to COMPOSE_UI_JVM_DEPENDENCIES,
+        "android" to COMPOSE_UI_ANDROID_DEPENDENCIES,
     )
 )

@@ -19,6 +19,7 @@ val copyVersionProvider = tasks.register<Copy>("copyVersion") {
             "projectVersion" to projectVersion,
             "mockposableMockitoCoordinates" to "${group}:mockposable-runtime-mockito:${projectVersion}",
             "mockposableMockKCoordinates" to "${group}:mockposable-runtime-mockk:${projectVersion}",
+            "mockposableComposeUiCoordinates" to "${group}:mockposable-runtime-composeui:${projectVersion}",
             "composeCompilerCoordinates" to libs.compose.compiler.get(),
             "composeRuntimeCoordinates" to libs.compose.runtime.get(),
             "mockKCoordinates" to libs.mockk.core.get(),

@@ -24,3 +24,8 @@ fun ComposeTestView(
     }
     is TestModel.Data -> Text(text = model.data.toString())
 }
+
+@Composable
+fun ComposeDummy(name: String, modifier: Modifier = Modifier) {
+    Text(text = name, modifier = modifier)
+}

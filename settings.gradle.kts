@@ -19,5 +19,8 @@ includeBuild("mockposable") {
 
         substitute(module("com.jeppeman.mockposable:mockposable-runtime-mockito"))
             .using(project(":mockposable-runtime:mockposable-runtime-mockito"))
+
+        substitute(module("com.jeppeman.mockposable:mockposable-runtime-composeui"))
+            .using(project(":mockposable-runtime:mockposable-runtime-composeui"))
     }
 }

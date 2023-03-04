@@ -27,7 +27,10 @@ class MockposablePlugin : ComponentRegistrar {
             )
         )
 
-        plugins.forEach { extension ->
+        for (extension in plugins) {
+            // No extra transformations needed for compose-ui
+            if (extension == "compose-ui") continue
+
             project.registerIrLast(
                 when (extension) {
                     "mockito" -> MockitoIrGenerationExtension(messageCollector.toLogger())
