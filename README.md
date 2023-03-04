@@ -39,12 +39,13 @@ buildscript {
 
 apply plugin: 'com.jeppeman.mockposable'
 
-// This is where you configure what mocking libraries to integrate with
+// This is where you configure what libraries to integrate with
 mockposable {
     // You can add one or many, e.g:
     // plugins = ['mockk']
     // plugins = ['mockito']
-    // plugins = ['mockk', 'mockito']
+    // plugins = ['compose-ui']
+    // plugins = ['mockk', 'mockito', 'compose-ui']
     plugins = [...] // plugins = listOf(...) for build.gradle.kts
 }
 ```
@@ -147,3 +148,32 @@ The full API surface of the Mockito-companion comprises the following:
 | <kbd>on</kbd> | <kbd>onComposable</kbd> | 
 | <kbd>doAnswer</kbd> | <kbd>doAnswerComposable</kbd> |
 | <kbd>verify</kbd> | <kbd>verifyComposable</kbd> |
+
+### Stubbing and verification with Compose UI
+
+In order to stub composables that gets emitted to the view tree in [Compose UI](https://developer.android.com/jetpack/compose), one has to do the following:
+
+```groovy
+mockposable {
+    plugins = ['compose-ui']
+}
+```
+
+```kotlin
+@RunWith(AndroidJUnit4::class)
+class MyTest {
+    @get:Rule
+    val composeTestRule = MockposableComposeRule(createComposeRule())
+
+    @Test
+    fun test() = mockkStatic("com.jeppeman.mockposable.integrationtests.android.TestViewKt") {
+        everyComposable { Text(name = any()) } answersComposable { Text(text = "Will replace") }
+
+        composeTestRule.setContent { Text(name = "Will be replaced") }
+
+        verifyComposable { ComposeDummy(name = any()) }
+        composeTestRule.onNodeWithText("Will replace").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Will be replaced").assertDoesNotExist()
+    }
+}
+```
