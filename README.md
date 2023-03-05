@@ -90,14 +90,12 @@ fun topLevelComposable(): String {
 }
 
 @Test
-fun `test something else`() {
-    mockkStatic("com.example.MyFilenameKt") // The FQ name of the container class Kotlin creates for the top level function
+fun `test something else`() = mockkStatic("com.example.MyFilenameKt") { // The FQ name of the container class Kotlin creates for the top level function
     everyComposable { topLevelComposable() } returns "bar"
     
     ...
     
     verifyComposable { topLevelComposable() }
-    unmockkStatic("com.example.MyFilenameKt") 
 }
 
 ```
