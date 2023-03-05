@@ -33,7 +33,7 @@ buildscript {
     }
     
     dependencies {
-         classpath 'com.jeppeman.mockposable:mockposable-gradle:0.1'
+         classpath 'com.jeppeman.mockposable:mockposable-gradle:0.2'
     }
 }
 
@@ -151,7 +151,7 @@ The full API surface of the Mockito-companion comprises the following:
 
 ### Stubbing and verification with Compose UI
 
-In order to stub composables that gets emitted to the view tree in [Compose UI](https://developer.android.com/jetpack/compose), one has to do the following:
+In order to stub composables that gets emitted to the view tree in [Compose UI](https://developer.android.com/jetpack/compose) (such as [Text](https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary#Text(androidx.compose.ui.text.AnnotatedString,androidx.compose.ui.Modifier,androidx.compose.ui.graphics.Color,androidx.compose.ui.unit.TextUnit,androidx.compose.ui.text.font.FontStyle,androidx.compose.ui.text.font.FontWeight,androidx.compose.ui.text.font.FontFamily,androidx.compose.ui.unit.TextUnit,androidx.compose.ui.text.style.TextDecoration,androidx.compose.ui.text.style.TextAlign,androidx.compose.ui.unit.TextUnit,androidx.compose.ui.text.style.TextOverflow,kotlin.Boolean,kotlin.Int,kotlin.Int,kotlin.collections.Map,kotlin.Function1,androidx.compose.ui.text.TextStyle))), there is a special [rule](https://github.com/jeppeman/mockposable/blob/main/mockposable/mockposable-runtime/mockposable-runtime-composeui/src/main/kotlin/com/jeppeman/mockposable/composeui/MockposableComposeRule.kt) that is needed in order to make sure that the stubbed composables are run with the right Composer, and hence emitted to the correct view tree: 
 
 ```groovy
 mockposable {
@@ -171,7 +171,6 @@ class MyTest {
 
         composeTestRule.setContent { Text(name = "Will be replaced") }
 
-        verifyComposable { ComposeDummy(name = any()) }
         composeTestRule.onNodeWithText("Will replace").assertIsDisplayed()
         composeTestRule.onNodeWithText("Will be replaced").assertDoesNotExist()
     }
