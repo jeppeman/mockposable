@@ -166,7 +166,7 @@ class MyTest {
     val composeTestRule = MockposableComposeRule(createComposeRule())
 
     @Test
-    fun test() = mockkStatic("com.jeppeman.mockposable.integrationtests.android.TestViewKt") {
+    fun test() = mockkStatic("androidx.compose.material.TextKt") {
         everyComposable { Text(name = any()) } answersComposable { Text(text = "Will replace") }
 
         composeTestRule.setContent { Text(name = "Will be replaced") }
