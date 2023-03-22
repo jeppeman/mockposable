@@ -165,9 +165,9 @@ class MyTest {
 
     @Test
     fun test() = mockkStatic("androidx.compose.material.TextKt") {
-        everyComposable { Text(name = any()) } answersComposable { Text(text = "Will replace") }
+        everyComposable { Text(text = any()) } answersComposable { Text(text = "Will replace") }
 
-        composeTestRule.setContent { Text(name = "Will be replaced") }
+        composeTestRule.setContent { Text(text = "Will be replaced") }
 
         composeTestRule.onNodeWithText("Will replace").assertIsDisplayed()
         composeTestRule.onNodeWithText("Will be replaced").assertDoesNotExist()
