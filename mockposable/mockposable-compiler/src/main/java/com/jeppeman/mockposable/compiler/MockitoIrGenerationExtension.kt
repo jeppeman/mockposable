@@ -2,6 +2,7 @@ package com.jeppeman.mockposable.compiler
 
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.checkDeclarationParents
+import org.jetbrains.kotlin.backend.common.extensions.FirIncompatiblePluginAPI
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.builders.irCall
@@ -118,6 +119,7 @@ private val IrCall.isOnComposable: Boolean
 private val IrCall.isVerifyComposable: Boolean
     get() = symbol.owner.fqNameWhenAvailable == verifyComposableFqName
 
+@OptIn(FirIncompatiblePluginAPI::class)
 private val IrPluginContext.anyMatcherFunction: IrSimpleFunctionSymbol
     get() = referenceFunctions(FqName("${MOCKPOSABLE_MOCKITO_PACKAGE_NAME}.any"))
         .firstOrNull()

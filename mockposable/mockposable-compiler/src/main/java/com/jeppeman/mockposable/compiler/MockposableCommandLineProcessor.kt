@@ -4,6 +4,7 @@ import com.google.auto.service.AutoService
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 
@@ -11,6 +12,7 @@ private const val ARG_NAME_MOCK_PLUGINS = "plugins"
 
 val KEY_MOCK_PLUGINS = CompilerConfigurationKey<String>(ARG_NAME_MOCK_PLUGINS)
 
+@OptIn(ExperimentalCompilerApi::class)
 @Suppress("unused") // Invoked by the compiler
 @AutoService(CommandLineProcessor::class)
 class MockposableCommandLineProcessor : CommandLineProcessor {

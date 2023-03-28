@@ -1,5 +1,6 @@
 package com.jeppeman.mockposable.compiler
 
+import org.jetbrains.kotlin.backend.common.extensions.FirIncompatiblePluginAPI
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrElement
@@ -17,6 +18,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.util.Logger
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
+@OptIn(FirIncompatiblePluginAPI::class)
 fun IrPluginContext.classSymbol(fqName: String): IrClassSymbol = referenceClass(FqName(fqName))!!
 
 fun <T> IrPluginContext.buildIr(

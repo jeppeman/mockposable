@@ -14,7 +14,6 @@ buildscript {
         classpath(libs.molecule)
         classpath(libs.paparazzi)
         classpath("com.jeppeman.mockposable:mockposable-gradle")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
     }
 }
 

@@ -10,8 +10,10 @@ import org.jetbrains.kotlin.cli.common.toLogger
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.com.intellij.openapi.extensions.LoadingOrder
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
+@OptIn(ExperimentalCompilerApi::class)
 @Suppress("unused") // Invoked by kotlinc
 @AutoService(ComponentRegistrar::class)
 class MockposablePlugin : ComponentRegistrar {

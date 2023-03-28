@@ -50,6 +50,11 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/LICENSE*")
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
 }
 
 dependencies {

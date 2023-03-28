@@ -5,6 +5,7 @@ import androidx.compose.compiler.plugins.kotlin.ComposeComponentRegistrar
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -80,6 +81,7 @@ fun main() {
     }
 }
 
+@OptIn(ExperimentalCompilerApi::class)
 fun compile(
     sourceFiles: List<SourceFile>,
     vararg plugins: String,
@@ -87,11 +89,11 @@ fun compile(
     val mockposableCommandLineProcessor = MockposableCommandLineProcessor()
     val composeCommandLineProcessor = ComposeCommandLineProcessor()
     return KotlinCompilation().apply {
-        languageVersion = "1.7"
+        languageVersion = "1.8"
         sources = sourceFiles
         useIR = true
         commandLineProcessors = listOf(mockposableCommandLineProcessor, composeCommandLineProcessor)
-        compilerPlugins = listOf(MockposablePlugin(), ComposeComponentRegistrar())
+        componentRegistrars = listOf(MockposablePlugin(), ComposeComponentRegistrar())
         pluginOptions = listOf(
             PluginOption(
                 pluginId = mockposableCommandLineProcessor.pluginId,
