@@ -111,7 +111,7 @@ fun IrCall.extractComposableCallFromBlockArg(
         ?: pluginError("No value argument found for ${composableBlockValueParameter.name}.")
 
     return composableBlockValueArgument.run {
-        safeAs<IrFunctionExpression>() ?: extractComposableLambdaInstance()
+        cast<IrFunctionExpression>() ?: extractComposableLambdaInstance()
     }
 }
 
@@ -147,7 +147,7 @@ private fun IrExpression.extractComposableLambdaInstance(
 
             val valueArgument = getValueArgument(blockValueParameter.index)
                 ?: pluginError("No value argument found for ${blockValueParameter.name}.")
-            valueArgument.safeAs<IrFunctionExpression>() ?: pluginError(
+            valueArgument.cast<IrFunctionExpression>() ?: pluginError(
                 "Assumed wrong type for value argument ${blockValueParameter.name}, expected ${IrFunctionExpression::class.java.name}, got ${valueArgument::class.java.name}."
             )
         }
@@ -156,7 +156,7 @@ private fun IrExpression.extractComposableLambdaInstance(
         else -> symbol.owner.body
             ?.statements
             ?.lastOrNull()
-            ?.safeAs<IrReturn>()
+            ?.cast<IrReturn>()
             ?.value
             ?.let { returnValue ->
                 when (returnValue) {
@@ -237,3 +237,6 @@ class MockposablePluginException(message: String) : Exception(
 )
 
 fun pluginError(message: String): Nothing = throw MockposablePluginException(message)
+
+@Suppress("UNCHECKED_CAST")
+inline fun <reified T : Any> Any?.cast(): T? = this as? T
