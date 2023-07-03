@@ -28,6 +28,12 @@ allprojects {
         google()
     }
 
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+
     tasks.withType(Test::class.java).configureEach {
         testLogging {
             exceptionFormat = TestExceptionFormat.FULL

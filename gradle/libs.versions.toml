@@ -1,8 +1,8 @@
 [versions]
-kotlin = '1.8.21'
+kotlin = '1.8.22'
 compose-ui = '1.4.3'
-compose-compiler = '1.4.7'
-google-ksp = '1.8.21-1.0.11'
+compose-compiler = '1.4.8'
+google-ksp = '1.8.22-1.0.11'
 activity = '1.6.1'
 espresso = '3.4.0'
 hamcrest = '2.2'
@@ -23,7 +23,7 @@ androidx-test-espresso-core = { module = 'androidx.test.espresso:espresso-core',
 androidx-fragment-testing = { module = 'androidx.fragment:fragment-testing', version = '1.5.4' }
 
 compose-compiler = { module = 'androidx.compose.compiler:compiler', version.ref = 'compose-compiler' }
-compose-runtime = { module = 'org.jetbrains.compose.runtime:runtime', version = '1.4.0' }
+compose-runtime = { module = 'org.jetbrains.compose.runtime:runtime', version = '1.4.1' }
 compose-ui = { module = 'androidx.compose.ui:ui', version.ref = 'compose-ui' }
 compose-material = { module = 'androidx.compose.material:material', version = '1.4.0' }
 compose-foundation = { module = 'androidx.compose.foundation:foundation', version = '1.4.0' }
