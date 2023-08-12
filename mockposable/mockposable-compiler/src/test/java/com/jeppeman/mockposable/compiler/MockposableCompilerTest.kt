@@ -1,7 +1,7 @@
 package com.jeppeman.mockposable.compiler
 
 import androidx.compose.compiler.plugins.kotlin.ComposeCommandLineProcessor
-import androidx.compose.compiler.plugins.kotlin.ComposeComponentRegistrar
+import androidx.compose.compiler.plugins.kotlin.ComposePluginRegistrar
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
@@ -93,7 +93,8 @@ fun compile(
         sources = sourceFiles
         useIR = true
         commandLineProcessors = listOf(mockposableCommandLineProcessor, composeCommandLineProcessor)
-        componentRegistrars = listOf(MockposablePlugin(), ComposeComponentRegistrar())
+        componentRegistrars = listOf(MockposablePlugin())
+        compilerPluginRegistrars = listOf(ComposePluginRegistrar())
         pluginOptions = listOf(
             PluginOption(
                 pluginId = mockposableCommandLineProcessor.pluginId,
