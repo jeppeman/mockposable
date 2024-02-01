@@ -15,7 +15,8 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
+    namespace = "com.jeppeman.mockposable.composeui"
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()

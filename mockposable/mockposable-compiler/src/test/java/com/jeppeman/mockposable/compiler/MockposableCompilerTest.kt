@@ -2,6 +2,7 @@ package com.jeppeman.mockposable.compiler
 
 import androidx.compose.compiler.plugins.kotlin.ComposeCommandLineProcessor
 import androidx.compose.compiler.plugins.kotlin.ComposePluginRegistrar
+import com.tschuchort.compiletesting.CompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
@@ -10,6 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+@OptIn(ExperimentalCompilerApi::class)
 class MockposableCompilerTest {
     @Test
     fun `GIVEN mockk plugin applied WHEN compiling THEN should compile successfully`() {
@@ -85,16 +87,14 @@ fun main() {
 fun compile(
     sourceFiles: List<SourceFile>,
     vararg plugins: String,
-): KotlinCompilation.Result {
+): CompilationResult {
     val mockposableCommandLineProcessor = MockposableCommandLineProcessor()
     val composeCommandLineProcessor = ComposeCommandLineProcessor()
     return KotlinCompilation().apply {
         languageVersion = "1.8"
         sources = sourceFiles
-        useIR = true
         commandLineProcessors = listOf(mockposableCommandLineProcessor, composeCommandLineProcessor)
-        componentRegistrars = listOf(MockposablePlugin())
-        compilerPluginRegistrars = listOf(ComposePluginRegistrar())
+        componentRegistrars = listOf(ComposePluginRegistrar(), MockposablePlugin())
         pluginOptions = listOf(
             PluginOption(
                 pluginId = mockposableCommandLineProcessor.pluginId,
@@ -106,9 +106,10 @@ fun compile(
     }.compile()
 }
 
+@OptIn(ExperimentalCompilerApi::class)
 fun compile(
     sourceFile: SourceFile,
     vararg plugins: String
-): KotlinCompilation.Result {
+): CompilationResult {
     return compile(listOf(sourceFile), *plugins)
 }
