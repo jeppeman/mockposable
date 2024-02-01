@@ -31,14 +31,15 @@ compose-foundation = { module = 'androidx.compose.foundation:foundation', versio
 compose-ui-test-junit4 = { module = 'androidx.compose.ui:ui-test-junit4', version.ref = 'compose-ui' }
 compose-ui-test-manifest = { module = 'androidx.compose.ui:ui-test-manifest', version.ref = 'compose-ui' }
 
-android-gradle = { module = 'com.android.tools.build:gradle', version = 'agp' }
+android-gradle = { module = 'com.android.tools.build:gradle', version.ref = 'agp' }
 
 autoservice-ksp = { module = 'dev.zacsweers.autoservice:auto-service-ksp', version = '1.0.0' }
 autoservice-annotations = { module = 'com.google.auto.service:auto-service-annotations', version = '1.0.1' }
 
 google-ksp = { module = 'com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin', version.ref = 'google-ksp' }
 
-compile-testing = { module = 'com.github.tschuchortdev:kotlin-compile-testing', version = '1.5.0' }
+# compile-testing = { module = 'com.github.tschuchortdev:kotlin-compile-testing', version = '1.5.0' }
+compile-testing = { module = 'dev.zacsweers.kctfork:core', version = '0.4.0' }
 
 junit = { module = 'androidx.test.ext:junit', version = '1.1.3' }
 

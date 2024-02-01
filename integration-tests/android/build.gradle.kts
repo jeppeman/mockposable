@@ -15,7 +15,8 @@ mockposable {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
+    namespace = "com.jeppeman.mockposable.integrationtests.android"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -37,6 +38,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     testOptions {
