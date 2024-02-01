@@ -49,6 +49,12 @@ allprojects {
             )
         }
     }
+
+    tasks.whenTaskAdded {
+        if (name == "generateMetadataFileForAarPublication") {
+            dependsOn("androidSourcesJar")
+        }
+    }
 }
 
 task("clean", Delete::class) {

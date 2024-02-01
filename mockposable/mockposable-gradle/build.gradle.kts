@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -65,5 +66,13 @@ tasks.whenTaskAdded {
     // For some reason signing the plugin marker artifact does not happen by default
     if (name == "publishCom.jeppeman.mockposablePluginMarkerMavenPublicationToMavenRepository") {
         dependsOn("signCom.jeppeman.mockposablePluginMarkerMavenPublication")
+    }
+
+    if (name == "publishMavenJavaPublicationToMavenRepository") {
+        dependsOn("signMavenJavaPublication", "signPluginMavenPublication")
+    }
+
+    if (name == "publishPluginMavenPublicationToMavenRepository") {
+        dependsOn("signPluginMavenPublication", "signMavenJavaPublication")
     }
 }

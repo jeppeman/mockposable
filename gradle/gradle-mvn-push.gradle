@@ -38,7 +38,6 @@ components.configureEach {
                     groupId = GROUP
 
                     from components.findByName("release")
-                    artifact project.androidSourcesJar
 
                     pom {
                         name = POM_NAME
