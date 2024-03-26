@@ -59,10 +59,16 @@ class MockposableSubPlugin : KotlinCompilerPluginSupportPlugin {
             .dependencies
             .add(project.dependencies.create(COMPOSE_RUNTIME_COORDINATES))
 
+        val composeCompilerCoordinates = if (extension.composeCompilerPluginVersion.isNotBlank()) {
+            COMPOSE_COMPILER_COORDINATES.dropLastWhile { it != ':' } + extension.composeCompilerPluginVersion
+        } else {
+            COMPOSE_COMPILER_COORDINATES
+        }
+
         project.configurations
             .getByName(PLUGIN_CLASSPATH_CONFIGURATION_NAME)
             .dependencies
-            .add(project.dependencies.create(COMPOSE_COMPILER_COORDINATES))
+            .add(project.dependencies.create(composeCompilerCoordinates))
 
         return project.provider {
             listOf(

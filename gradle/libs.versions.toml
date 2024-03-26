@@ -1,33 +1,31 @@
 [versions]
-kotlin = '1.9.22'
-compose-ui = '1.5.4'
-compose-compiler = '1.5.8'
-google-ksp = '1.9.22-1.0.16'
+kotlin = '1.9.23'
+compose-ui = '1.6.4'
+compose-compiler = '1.5.11'
+google-ksp = '1.9.23-1.0.19'
 activity = '1.8.2'
-agp = '8.2.1'
-espresso = '3.4.0'
-hamcrest = '2.2'
+agp = '8.2.2'
+espresso = '3.5.1'
 mockk = '1.13.2'
 mockito = '4.8.1'
 
 [libraries]
-kotlin-stdlib = { module = 'org.jetbrains.kotlin:kotlin-stdlib-jdk7', version.ref = 'kotlin' }
 kotlin-gradle = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version.ref = 'kotlin' }
 kotlin-compiler = { module = 'org.jetbrains.kotlin:kotlin-compiler-embeddable', version.ref = 'kotlin' }
 
 androidx-activity = { module = 'androidx.activity:activity', version.ref = 'activity' }
-androidx-appcompat = { module = 'androidx.appcompat:appcompat', version = '1.5.1' }
+androidx-appcompat = { module = 'androidx.appcompat:appcompat', version = '1.6.1' }
 androidx-activity-compose = { module = 'androidx.activity:activity-compose', version.ref = 'activity' }
-androidx-lifecycle-viewmodel-compose = { module = 'androidx.lifecycle:lifecycle-viewmodel-compose', version = '2.5.1' }
-androidx-test-runner = { module = 'androidx.test:runner', version = '1.2.0'}
+androidx-lifecycle-viewmodel-compose = { module = 'androidx.lifecycle:lifecycle-viewmodel-compose', version = '2.7.0' }
+androidx-test-runner = { module = 'androidx.test:runner', version = '1.5.2'}
 androidx-test-espresso-core = { module = 'androidx.test.espresso:espresso-core', version.ref = 'espresso' }
-androidx-fragment-testing = { module = 'androidx.fragment:fragment-testing', version = '1.5.4' }
+androidx-fragment-testing = { module = 'androidx.fragment:fragment-testing', version = '1.6.2' }
 
 compose-compiler = { module = 'androidx.compose.compiler:compiler', version.ref = 'compose-compiler' }
 compose-runtime = { module = 'org.jetbrains.compose.runtime:runtime', version = '1.4.1' }
 compose-ui = { module = 'androidx.compose.ui:ui', version.ref = 'compose-ui' }
-compose-material = { module = 'androidx.compose.material:material', version = '1.4.0' }
-compose-foundation = { module = 'androidx.compose.foundation:foundation', version = '1.4.0' }
+compose-material = { module = 'androidx.compose.material:material', version = '1.6.4' }
+compose-foundation = { module = 'androidx.compose.foundation:foundation', version = '1.6.4' }
 compose-ui-test-junit4 = { module = 'androidx.compose.ui:ui-test-junit4', version.ref = 'compose-ui' }
 compose-ui-test-manifest = { module = 'androidx.compose.ui:ui-test-manifest', version.ref = 'compose-ui' }
 

@@ -12,6 +12,7 @@ plugins {
 
 mockposable {
     plugins = listOf(MOCKK, MOCKITO, COMPOSE_UI)
+    composeCompilerPluginVersion = libs.versions.compose.compiler.get()
 }
 
 android {

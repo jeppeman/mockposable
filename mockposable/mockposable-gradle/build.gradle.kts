@@ -75,4 +75,12 @@ tasks.whenTaskAdded {
     if (name == "publishPluginMavenPublicationToMavenRepository") {
         dependsOn("signPluginMavenPublication", "signMavenJavaPublication")
     }
+
+    if (name == "publishMavenJavaPublicationToMavenLocal") {
+        dependsOn("signPluginMavenPublication", "signMavenJavaPublication")
+    }
+
+    if (name == "publishPluginMavenPublicationToMavenLocal") {
+        dependsOn("signPluginMavenPublication", "signMavenJavaPublication")
+    }
 }
