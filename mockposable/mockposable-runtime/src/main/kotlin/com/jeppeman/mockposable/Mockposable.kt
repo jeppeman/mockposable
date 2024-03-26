@@ -13,7 +13,6 @@ object Mockposable {
 /**
  * Runs the initial composition of a composable function and returns its result.
  */
-
 @Suppress("UNCHECKED_CAST")
 fun <T> runComposableOneShot(useActiveComposer: Boolean = false, block: @Composable () -> T): T {
     if (!useActiveComposer || Mockposable.activeComposer == null) {
@@ -24,10 +23,10 @@ fun <T> runComposableOneShot(useActiveComposer: Boolean = false, block: @Composa
                 val composition = Composition(UnitApplier, recomposer)
                 composition.setContent {
                     result = block()
-                    composition.dispose()
+                    SideEffect { composition.dispose() }
                     recomposer.close()
-                    /* We're just looking to execute block() and escape as soon as possible. Perhaps
-                there is a more elegant way of doing this, but this gets the job done. */
+                    // We're just looking to execute block() and escape as soon as possible. Perhaps
+                    // there is a more elegant way of doing this, but this gets the job done.
                     cancel()
                 }
             }

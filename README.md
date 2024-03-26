@@ -33,13 +33,14 @@ buildscript {
     }
     
     dependencies {
-         classpath 'com.jeppeman.mockposable:mockposable-gradle:0.7'
+         classpath 'com.jeppeman.mockposable:mockposable-gradle:0.8'
     }
 }
 
 apply plugin: 'com.jeppeman.mockposable'
 
-// This is where you configure what libraries to integrate with
+// This is where you configure what libraries to integrate with, and what version of the compose 
+// compiler to use.
 mockposable {
     // You can add one or many, e.g:
     // plugins = ['mockk']
@@ -47,6 +48,12 @@ mockposable {
     // plugins = ['compose-ui']
     // plugins = ['mockk', 'mockito', 'compose-ui']
     plugins = [...] // plugins = listOf(...) for build.gradle.kts
+
+    // This is optional, and defaults to the version that mockposable uses internally.
+    // If you as a consumer upgrade to a newer version of Kotlin before this plugin has had a to, 
+    // you can explicitly select a version of the compose compiler plugin that is compatible with
+    // the version of Kotlin you use.
+    composeCompilerPluginVersion = "x.y.z"
 }
 ```
 This will apply the Kotlin compiler plugin as well as the relevant runtime dependencies.
