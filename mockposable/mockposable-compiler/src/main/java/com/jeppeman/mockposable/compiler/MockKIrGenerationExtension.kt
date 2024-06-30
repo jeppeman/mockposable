@@ -132,19 +132,19 @@ private val IrValueParameter.anyMatcherFunction: IrSimpleFunctionSymbol
     )
 
 private val everyComposableFqName: FqName
-    get() = FqName("${MOCKPOSABLE_MOCKK_FILE_NAME}.everyComposable")
+    get() = FqName("${MOCKPOSABLE_MOCKK_PACKAGE_NAME}.everyComposable")
 
 private val verifyComposableFqName: FqName
-    get() = FqName("${MOCKPOSABLE_MOCKK_FILE_NAME}.verifyComposable")
+    get() = FqName("${MOCKPOSABLE_MOCKK_PACKAGE_NAME}.verifyComposable")
 
 private val verifyComposableAllFqName: FqName
-    get() = FqName("${MOCKPOSABLE_MOCKK_FILE_NAME}.verifyComposableAll")
+    get() = FqName("${MOCKPOSABLE_MOCKK_PACKAGE_NAME}.verifyComposableAll")
 
 private val verifyComposableOrderFqName: FqName
-    get() = FqName("${MOCKPOSABLE_MOCKK_FILE_NAME}.verifyComposableOrder")
+    get() = FqName("${MOCKPOSABLE_MOCKK_PACKAGE_NAME}.verifyComposableOrder")
 
 private val verifyComposableSequenceFqName: FqName
-    get() = FqName("${MOCKPOSABLE_MOCKK_FILE_NAME}.verifyComposableSequence")
+    get() = FqName("${MOCKPOSABLE_MOCKK_PACKAGE_NAME}.verifyComposableSequence")
 
 private val IrCall.isEveryComposable: Boolean
     get() = symbol.owner.fqNameWhenAvailable == everyComposableFqName
@@ -169,5 +169,3 @@ private val IrCall.isMockKStubScopeReturnType: Boolean
 
 private const val MOCKK_PACKAGE_NAME = "io.mockk"
 private const val MOCKPOSABLE_MOCKK_PACKAGE_NAME = "com.jeppeman.mockposable.mockk"
-private const val MOCKPOSABLE_MOCKK_FILE_NAME =
-    "${MOCKPOSABLE_MOCKK_PACKAGE_NAME}.MockposableMockKKt"

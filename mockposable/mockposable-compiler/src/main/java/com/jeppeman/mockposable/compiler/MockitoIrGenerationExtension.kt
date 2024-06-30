@@ -108,10 +108,10 @@ private fun IrFunctionExpression.transformAllComposableCalls(
 }
 
 private val onComposableFqName: FqName
-    get() = FqName("${MOCKPOSABLE_MOCKITO_FILE_NAME}.onComposable")
+    get() = FqName("${MOCKPOSABLE_MOCKITO_PACKAGE_NAME}.onComposable")
 
 private val verifyComposableFqName: FqName
-    get() = FqName("${MOCKPOSABLE_MOCKITO_FILE_NAME}.verifyComposable")
+    get() = FqName("${MOCKPOSABLE_MOCKITO_PACKAGE_NAME}.verifyComposable")
 
 private val IrCall.isOnComposable: Boolean
     get() = symbol.owner.fqNameWhenAvailable == onComposableFqName
@@ -119,14 +119,11 @@ private val IrCall.isOnComposable: Boolean
 private val IrCall.isVerifyComposable: Boolean
     get() = symbol.owner.fqNameWhenAvailable == verifyComposableFqName
 
-@OptIn(FirIncompatiblePluginAPI::class)
 private val IrPluginContext.anyMatcherFunction: IrSimpleFunctionSymbol
-    get() = referenceFunctions(FqName("${MOCKPOSABLE_MOCKITO_PACKAGE_NAME}.any"))
+    get() = referenceFunctions("any".callableId(FqName(MOCKPOSABLE_MOCKITO_PACKAGE_NAME)))
         .firstOrNull()
         ?: pluginError(
             "\"${MOCKPOSABLE_MOCKITO_PACKAGE_NAME}.any\" not found, this should not happen."
         )
 
 private const val MOCKPOSABLE_MOCKITO_PACKAGE_NAME = "com.jeppeman.mockposable.mockito"
-private const val MOCKPOSABLE_MOCKITO_FILE_NAME =
-    "${MOCKPOSABLE_MOCKITO_PACKAGE_NAME}.MockposableMockitoKt"

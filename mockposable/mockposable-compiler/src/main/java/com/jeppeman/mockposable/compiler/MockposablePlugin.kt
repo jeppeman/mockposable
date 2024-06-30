@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSourceLocation
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.cli.common.toLogger
+import org.jetbrains.kotlin.cli.common.messages.toLogger
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.com.intellij.openapi.extensions.LoadingOrder
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
@@ -17,6 +17,9 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 @Suppress("unused") // Invoked by kotlinc
 @AutoService(ComponentRegistrar::class)
 class MockposablePlugin : ComponentRegistrar {
+    override val supportsK2: Boolean
+        get() = true
+
     override fun registerProjectComponents(
         project: MockProject,
         configuration: CompilerConfiguration
