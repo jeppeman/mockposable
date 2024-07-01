@@ -5,14 +5,14 @@ import com.jeppeman.mockposable.gradle.COMPOSE_UI
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.compose.compiler)
     id("com.jeppeman.mockposable")
-    id("app.cash.molecule")
     id("app.cash.paparazzi")
 }
 
 mockposable {
     plugins = listOf(MOCKK, MOCKITO, COMPOSE_UI)
-    composeCompilerPluginVersion = libs.versions.compose.compiler.get()
+    composeCompilerPluginVersion = libs.versions.kotlin.get()
 }
 
 android {
@@ -31,10 +31,6 @@ android {
             name = "GRADLE_TASKS",
             value = "new String[] { $taskNames }"
         )
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     buildFeatures {
@@ -70,14 +66,17 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.test.manifest)
+    implementation(libs.molecule)
 
     testImplementation(libs.hamcrest)
     testImplementation(libs.robolectric)
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.test.espresso.core)
+    testImplementation(libs.androidx.test.annotation)
 
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.annotation)
 }

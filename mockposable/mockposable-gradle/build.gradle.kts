@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -21,7 +20,6 @@ val copyVersionProvider = tasks.register<Copy>("copyVersion") {
             "mockposableMockitoCoordinates" to "${group}:mockposable-runtime-mockito:${projectVersion}",
             "mockposableMockKCoordinates" to "${group}:mockposable-runtime-mockk:${projectVersion}",
             "mockposableComposeUiCoordinates" to "${group}:mockposable-runtime-composeui:${projectVersion}",
-            "composeCompilerCoordinates" to libs.compose.compiler.get(),
             "composeRuntimeCoordinates" to libs.compose.runtime.get(),
             "mockKCoordinates" to libs.mockk.core.get(),
             "mockKAndroidCoordinates" to libs.mockk.android.get(),
@@ -40,6 +38,7 @@ dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
     implementation(libs.kotlin.gradle)
+    implementation(libs.compose.compiler.gradle)
 }
 
 gradlePlugin {

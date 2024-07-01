@@ -11,7 +11,6 @@ buildscript {
     dependencies {
         classpath(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
         classpath(libs.android.gradle)
-        classpath(libs.molecule)
         classpath(libs.paparazzi)
         classpath("com.jeppeman.mockposable:mockposable-gradle")
     }
@@ -20,6 +19,7 @@ buildscript {
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("jvm") version libs.versions.kotlin.get() apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 allprojects {

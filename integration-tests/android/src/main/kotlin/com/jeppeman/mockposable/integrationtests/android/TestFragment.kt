@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.compose.runtime.Composable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import app.cash.molecule.RecompositionClock
+import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -38,7 +38,7 @@ class TestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val models = lifecycleScope.launchMolecule(RecompositionClock.Immediate) {
+        val models = lifecycleScope.launchMolecule(RecompositionMode.Immediate) {
             present(events)
         }
 

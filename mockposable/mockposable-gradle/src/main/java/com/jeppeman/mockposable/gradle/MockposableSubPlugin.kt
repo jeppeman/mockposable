@@ -2,6 +2,8 @@ package com.jeppeman.mockposable.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradleSubplugin
+import org.jetbrains.kotlin.gradle.model.ComposeCompiler
 import org.jetbrains.kotlin.gradle.plugin.*
 
 @Suppress("unused") // Invoked by gradle
@@ -59,16 +61,7 @@ class MockposableSubPlugin : KotlinCompilerPluginSupportPlugin {
             .dependencies
             .add(project.dependencies.create(COMPOSE_RUNTIME_COORDINATES))
 
-        val composeCompilerCoordinates = if (extension.composeCompilerPluginVersion.isNotBlank()) {
-            COMPOSE_COMPILER_COORDINATES.dropLastWhile { it != ':' } + extension.composeCompilerPluginVersion
-        } else {
-            COMPOSE_COMPILER_COORDINATES
-        }
-
-        project.configurations
-            .getByName(PLUGIN_CLASSPATH_CONFIGURATION_NAME)
-            .dependencies
-            .add(project.dependencies.create(composeCompilerCoordinates))
+        project.plugins.apply(ComposeCompilerGradleSubplugin::class.java)
 
         return project.provider {
             listOf(

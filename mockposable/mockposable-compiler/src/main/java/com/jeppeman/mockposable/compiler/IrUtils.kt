@@ -1,12 +1,21 @@
 package com.jeppeman.mockposable.compiler
 
-import org.jetbrains.kotlin.backend.common.extensions.FirIncompatiblePluginAPI
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.IrVariable
-import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.expressions.IrBody
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrContainerExpression
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrFunctionExpression
+import org.jetbrains.kotlin.ir.expressions.IrGetField
+import org.jetbrains.kotlin.ir.expressions.IrLoop
+import org.jetbrains.kotlin.ir.expressions.IrReturn
+import org.jetbrains.kotlin.ir.expressions.IrTry
+import org.jetbrains.kotlin.ir.expressions.IrTypeOperatorCall
+import org.jetbrains.kotlin.ir.expressions.IrWhen
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.types.defaultType
@@ -14,12 +23,23 @@ import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.ir.util.statements
+import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.util.Logger
-import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
-@OptIn(FirIncompatiblePluginAPI::class)
-fun IrPluginContext.classSymbol(fqName: String): IrClassSymbol = referenceClass(FqName(fqName))!!
+fun FqName.classId(
+    isLocal: Boolean = false
+): ClassId = ClassId(parent(), FqName.topLevel(shortName()), isLocal)
+
+fun IrPluginContext.classSymbol(
+    fqName: String
+): IrClassSymbol = referenceClass(FqName(fqName).classId())!!
+
+fun String.callableId(
+    packageName: FqName
+): CallableId = CallableId(packageName, Name.identifier(this))
 
 fun <T> IrPluginContext.buildIr(
     declarationSymbol: IrSymbol,

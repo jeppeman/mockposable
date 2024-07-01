@@ -34,8 +34,8 @@ class SnapshotTest {
         deviceConfig = DeviceConfig.PIXEL_5,
         theme = "Theme.Material",
         environment = detectEnvironment().copy(
-            platformDir = "${androidHome()}/platforms/android-32",
-            compileSdkVersion = 32
+            platformDir = "${androidHome()}/platforms/android-34",
+            compileSdkVersion = 34
         )
     )
 
