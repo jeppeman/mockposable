@@ -11,14 +11,15 @@ import android.widget.TextView
 import androidx.compose.runtime.Composable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 class TestFragment : Fragment() {
-    private val events = MutableSharedFlow<TestEvent>(replay = 1)
-    lateinit var present: @Composable (MutableSharedFlow<TestEvent>) -> TestModel
+    lateinit var events: MutableSharedFlow<TestEvent>
+    lateinit var composableLauncher: CoroutineScope.(@Composable () -> TestModel) -> Flow<TestModel>
+    lateinit var presenter: TestPresenter
 
     private val content: LinearLayout by lazy {
         LinearLayout(requireContext()).apply {
@@ -38,10 +39,7 @@ class TestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val models = lifecycleScope.launchMolecule(RecompositionMode.Immediate) {
-            present(events)
-        }
-
+        val models = lifecycleScope.composableLauncher { presenter.present(events) }
         lifecycleScope.launch { models.collect(::render) }
     }
 

@@ -38,8 +38,8 @@ class MockposablePlugin : ComponentRegistrar {
 
             project.registerIrLast(
                 when (extension) {
-                    "mockito" -> MockitoIrGenerationExtension(messageCollector.toLogger())
-                    "mockk" -> MockKIrGenerationExtension(messageCollector.toLogger())
+                    "mockito" -> MockitoIrGenerationExtension(messageCollector)
+                    "mockk" -> MockKIrGenerationExtension(messageCollector)
                     else -> throw IllegalArgumentException("Unsupported plugin extension: $extension")
                 }
             )

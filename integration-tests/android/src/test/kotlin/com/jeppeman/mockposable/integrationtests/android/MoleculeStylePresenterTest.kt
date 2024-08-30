@@ -1,6 +1,7 @@
 package com.jeppeman.mockposable.integrationtests.android
 
 import android.os.Build
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.RecomposeScope
 import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.ui.test.assertIsDisplayed
@@ -17,10 +18,15 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.molecule.RecompositionMode
+import app.cash.molecule.launchMolecule
 import com.jeppeman.mockposable.mockk.everyComposable
 import io.mockk.MockKMatcherScope
 import io.mockk.mockk
+import io.mockk.slot
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Rule
 import org.junit.Test
@@ -49,16 +55,12 @@ class ComposableMoleculePresenterTest {
         val fakeErrorModel = TestModel.Error("Failed")
         val fakeDataModel = TestModel.Data(2)
         val mockPresenter = mockk<TestPresenter> {
-            everyComposable { present(matchFirst { it == null }) } returnsMany listOf(
-                TestModel.Loading,
-                fakeErrorModel
-            )
+            everyComposable { present(matchFirst { it == null }) } returns TestModel.Loading andThen fakeErrorModel
             everyComposable { present(matchFirst { it == TestEvent.Reload }) } returns fakeDataModel
         }
 
         composeTestRule.setContent {
-            recomposeScope = currentRecomposeScope
-            ComposeTestView(mockPresenter, events)
+            ComposeTestView(mockPresenter, events) { recomposeScope = it }
         }
 
         // First progress is displayed
@@ -74,7 +76,10 @@ class ComposableMoleculePresenterTest {
 
 }
 
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU], instrumentedPackages = ["androidx.loader.content"])
+@Config(
+    sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE],
+    instrumentedPackages = ["androidx.loader.content"]
+)
 @RunWith(AndroidJUnit4::class)
 class FragmentMoleculePresenterTest {
     private lateinit var recomposeScope: RecomposeScope
@@ -84,18 +89,18 @@ class FragmentMoleculePresenterTest {
         factory = object : FragmentFactory() {
             override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
                 return TestFragment().apply {
-                    present = { events ->
-                        val proxyEvents = object : ProxyMutableSharedFlow<TestEvent>(events) {
-                            override fun tryEmit(
-                                value: TestEvent
-                            ): Boolean = super.tryEmit(value).apply {
-                                recomposeScope.invalidate()
-                            }
-                        }
-
-                        recomposeScope = currentRecomposeScope
-                        mockPresenter.present(events = proxyEvents)
+                    events = object : ProxyMutableSharedFlow<TestEvent>() {
+                        override fun tryEmit(
+                            value: TestEvent
+                        ): Boolean = super.tryEmit(value).apply { recomposeScope.invalidate() }
                     }
+                    composableLauncher = { composable ->
+                        launchMolecule(RecompositionMode.Immediate) {
+                            recomposeScope = currentRecomposeScope
+                            composable()
+                        }
+                    }
+                    presenter = mockPresenter
                 }
             }
         }
@@ -121,6 +126,6 @@ class FragmentMoleculePresenterTest {
         // Press "Try again" and reload
         onView(withText(equalTo("Try again"))).perform(click())
         // Then the actual data is displayed
-        onView(withText(fakeData.data.toString()))
+        onView(withText(fakeData.data.toString())).check(matches(isDisplayed()))
     }
 }
