@@ -1,10 +1,12 @@
 package com.jeppeman.mockposable.compiler
 
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
-import org.jetbrains.kotlin.backend.common.checkDeclarationParents
-import org.jetbrains.kotlin.backend.common.extensions.FirIncompatiblePluginAPI
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.validateIr
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
+import org.jetbrains.kotlin.cli.common.messages.toLogger
+import org.jetbrains.kotlin.config.IrVerificationMode
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.expressions.IrCall
@@ -26,7 +28,8 @@ import org.jetbrains.kotlin.util.Logger
  * verify these calls with Mockito.
  */
 class MockitoIrGenerationExtension(
-    private val logger: Logger
+    private val messageCollector: MessageCollector,
+    private val logger: Logger = messageCollector.toLogger(),
 ) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         logger.log("Running Mockito composable transformations")
@@ -35,7 +38,13 @@ class MockitoIrGenerationExtension(
             MockitoVerifyComposableElementTransformer(logger, pluginContext)
         )
         transformers.forEach { transformer -> moduleFragment.transform(transformer, null) }
-        moduleFragment.checkDeclarationParents()
+        validateIr(messageCollector, IrVerificationMode.ERROR) {
+            performBasicIrValidation(
+                moduleFragment,
+                moduleFragment.irBuiltins,
+                "Mockito transformation"
+            )
+        }
     }
 }
 

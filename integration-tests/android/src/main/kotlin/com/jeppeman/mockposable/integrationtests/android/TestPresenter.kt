@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.Flow
 
 sealed interface TestEvent {
-    object Reload : TestEvent
+    data object Reload : TestEvent
 }
 
 sealed interface TestModel {
-    object Loading : TestModel
+    data object Loading : TestModel
     class Error(val message: String) : TestModel
     class Data(val data: Int) : TestModel
 }
