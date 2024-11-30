@@ -15,7 +15,7 @@ import org.mockito.verification.VerificationMode
 /**
  * @see [KStubbing.on]
  */
-fun <T, R> KStubbing<T>.onComposable(stubBlock: @Composable T.() -> R): OngoingStubbing<R> = try {
+fun <T : Any, R> KStubbing<T>.onComposable(stubBlock: @Composable T.() -> R): OngoingStubbing<R> = try {
     runComposableOneShot { Mockito.`when`(mock.stubBlock()) }
 } catch (e: NullPointerException) {
     throw MockitoKotlinException(

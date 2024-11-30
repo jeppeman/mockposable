@@ -1,5 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 buildscript {
     repositories {
@@ -10,7 +11,6 @@ buildscript {
     }
 
     dependencies {
-        classpath(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
         classpath(libs.android.gradle)
         classpath(libs.google.ksp)
     }
@@ -30,7 +30,7 @@ allprojects {
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = JvmTarget.JVM_21.target
         }
     }
 
