@@ -7,6 +7,7 @@ import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.PluginOption
 import com.tschuchort.compiletesting.SourceFile
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
+import org.jetbrains.kotlin.config.JvmTarget
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -93,8 +94,10 @@ fun compile(
     return KotlinCompilation().apply {
         languageVersion = "2.0"
         sources = sourceFiles
+        jvmTarget = JvmTarget.JVM_21.description
         commandLineProcessors = listOf(mockposableCommandLineProcessor, composeCommandLineProcessor)
-        componentRegistrars = listOf(ComposePluginRegistrar(), MockposablePlugin())
+        componentRegistrars = listOf(MockposablePlugin())
+        compilerPluginRegistrars = listOf(ComposePluginRegistrar())
         pluginOptions = listOf(
             PluginOption(
                 pluginId = mockposableCommandLineProcessor.pluginId,

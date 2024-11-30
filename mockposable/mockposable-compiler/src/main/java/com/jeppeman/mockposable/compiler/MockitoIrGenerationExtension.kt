@@ -1,6 +1,7 @@
 package com.jeppeman.mockposable.compiler
 
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
+import org.jetbrains.kotlin.backend.common.IrValidatorConfig
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.validateIr
@@ -42,7 +43,8 @@ class MockitoIrGenerationExtension(
             performBasicIrValidation(
                 moduleFragment,
                 moduleFragment.irBuiltins,
-                "Mockito transformation"
+                "Mockito transformation",
+                IrValidatorConfig(),
             )
         }
     }
