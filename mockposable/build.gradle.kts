@@ -28,12 +28,6 @@ allprojects {
         google()
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = JvmTarget.JVM_21.target
-        }
-    }
-
     tasks.withType(Test::class.java).configureEach {
         testLogging {
             exceptionFormat = TestExceptionFormat.FULL
@@ -48,6 +42,25 @@ allprojects {
                 TestLogEvent.STANDARD_OUT,
                 TestLogEvent.STANDARD_ERROR
             )
+        }
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class) {
+        kotlinOptions {
+            jvmTarget = JvmTarget.JVM_11.target
+        }
+    }
+
+    tasks.withType(JavaCompile::class).configureEach {
+        sourceCompatibility = JavaVersion.VERSION_11.toString()
+        targetCompatibility = JavaVersion.VERSION_11.toString()
+    }
+
+    plugins.withType(com.android.build.gradle.BasePlugin::class).configureEach {
+        val android = extensions.getByName("android") as com.android.build.gradle.BaseExtension
+        android.compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
         }
     }
 
