@@ -1,9 +1,9 @@
 [versions]
-kotlin = '2.1.0'
-compose-ui = '1.7.5'
-google-ksp = '2.1.0-1.0.29' # https://mvnrepository.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin?repo=central
-activity = '1.9.3'
-agp = '8.5.2'
+kotlin = '2.1.20'
+compose-ui = '1.7.8'
+google-ksp = '2.1.20-1.0.32' # https://mvnrepository.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin?repo=central
+activity = '1.10.1'
+agp = '8.9.1'
 espresso = '3.6.1'
 mockk = '1.13.12'
 mockito = '4.8.1'
@@ -19,14 +19,14 @@ androidx-lifecycle-viewmodel-compose = { module = 'androidx.lifecycle:lifecycle-
 androidx-test-runner = { module = 'androidx.test:runner', version = '1.6.2'}
 androidx-test-espresso-core = { module = 'androidx.test.espresso:espresso-core', version.ref = 'espresso' }
 androidx-test-annotation = { module = 'androidx.test:annotation', version = '1.0.1' }
-androidx-fragment-testing = { module = 'androidx.fragment:fragment-testing', version = '1.8.5' }
+androidx-fragment-testing = { module = 'androidx.fragment:fragment-testing', version = '1.8.6' }
 
 compose-compiler = { module = 'org.jetbrains.kotlin:kotlin-compose-compiler-plugin-embeddable', version.ref = 'kotlin' }
 compose-compiler-gradle = { module = 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin', version.ref = 'kotlin' }
 compose-runtime = { module = 'org.jetbrains.compose.runtime:runtime', version = '1.6.11' }
 compose-ui = { module = 'androidx.compose.ui:ui', version.ref = 'compose-ui' }
-compose-material = { module = 'androidx.compose.material:material', version = '1.7.5' }
-compose-foundation = { module = 'androidx.compose.foundation:foundation', version = '1.7.5' }
+compose-material = { module = 'androidx.compose.material:material', version = '1.7.8' }
+compose-foundation = { module = 'androidx.compose.foundation:foundation', version = '1.7.8' }
 compose-ui-test-junit4 = { module = 'androidx.compose.ui:ui-test-junit4', version.ref = 'compose-ui' }
 compose-ui-test-manifest = { module = 'androidx.compose.ui:ui-test-manifest', version.ref = 'compose-ui' }
 
@@ -55,7 +55,7 @@ mockito-kotlin = { module = 'org.mockito.kotlin:mockito-kotlin', version = '5.4.
 mockito-inline = { module = 'org.mockito:mockito-inline', version.ref = 'mockito' }
 mockito-android = { module = 'org.mockito:mockito-android', version.ref = 'mockito' }
 
-paparazzi = { module = 'app.cash.paparazzi:paparazzi-gradle-plugin', version = '1.3.4' }
+paparazzi = { module = 'app.cash.paparazzi:paparazzi-gradle-plugin', version = '1.3.5' }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

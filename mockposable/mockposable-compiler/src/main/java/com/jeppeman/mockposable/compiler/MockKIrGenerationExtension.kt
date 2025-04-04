@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.backend.common.validateIr
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.toLogger
 import org.jetbrains.kotlin.config.IrVerificationMode
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
@@ -48,7 +49,7 @@ class MockKIrGenerationExtension(
         validateIr(messageCollector, IrVerificationMode.ERROR) {
             performBasicIrValidation(
                 moduleFragment,
-                moduleFragment.irBuiltins,
+                pluginContext.irBuiltIns,
                 "MockK transformation",
                 IrValidatorConfig(),
             )

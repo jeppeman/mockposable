@@ -15,7 +15,7 @@ mockposable {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
     namespace = "com.jeppeman.mockposable.integrationtests.android"
 
     defaultConfig {

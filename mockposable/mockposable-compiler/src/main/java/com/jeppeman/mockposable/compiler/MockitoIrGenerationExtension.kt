@@ -42,7 +42,7 @@ class MockitoIrGenerationExtension(
         validateIr(messageCollector, IrVerificationMode.ERROR) {
             performBasicIrValidation(
                 moduleFragment,
-                moduleFragment.irBuiltins,
+                pluginContext.irBuiltIns,
                 "Mockito transformation",
                 IrValidatorConfig(),
             )

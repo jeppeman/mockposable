@@ -18,7 +18,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
-import app.cash.paparazzi.androidHome
 import app.cash.paparazzi.detectEnvironment
 import com.jeppeman.mockposable.mockk.everyComposable
 import io.mockk.mockkStatic
@@ -34,8 +33,7 @@ class SnapshotTest {
         deviceConfig = DeviceConfig.PIXEL_5,
         theme = "Theme.Material",
         environment = detectEnvironment().copy(
-            platformDir = "${androidHome()}/platforms/android-34",
-            compileSdkVersion = 34
+            compileSdkVersion = 35
         )
     )
 
