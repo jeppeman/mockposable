@@ -1,5 +1,8 @@
+@file:OptIn(DeprecatedForRemovalCompilerApi::class)
+
 package com.jeppeman.mockposable.compiler
 
+import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrElement

@@ -46,8 +46,8 @@ allprojects {
     }
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class) {
-        kotlinOptions {
-            jvmTarget = JvmTarget.JVM_11.target
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
