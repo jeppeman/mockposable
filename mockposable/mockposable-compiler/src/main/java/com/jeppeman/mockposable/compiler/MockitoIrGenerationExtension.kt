@@ -1,5 +1,8 @@
+@file:OptIn(DeprecatedForRemovalCompilerApi::class)
+
 package com.jeppeman.mockposable.compiler
 
+import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.IrValidatorConfig
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension

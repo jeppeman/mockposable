@@ -1,5 +1,8 @@
+@file:OptIn(DeprecatedForRemovalCompilerApi::class)
+
 package com.jeppeman.mockposable.compiler
 
+import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.IrValidatorConfig
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
@@ -19,6 +22,7 @@ import org.jetbrains.kotlin.ir.expressions.IrFunctionExpression
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.getSimpleFunction
@@ -45,14 +49,18 @@ class MockKIrGenerationExtension(
             EveryComposableElementTransformer(logger, pluginContext),
             VerifyComposableElementTransformer(logger, pluginContext)
         )
+        val beforeTransform = moduleFragment.dump()
         transformers.forEach { transformer -> moduleFragment.transform(transformer, null) }
-        validateIr(messageCollector, IrVerificationMode.ERROR) {
-            performBasicIrValidation(
-                moduleFragment,
-                pluginContext.irBuiltIns,
-                "MockK transformation",
-                IrValidatorConfig(),
-            )
+        val afterTransform = moduleFragment.dump()
+        if (beforeTransform != afterTransform) {
+            validateIr(messageCollector, IrVerificationMode.ERROR) {
+                performBasicIrValidation(
+                    moduleFragment,
+                    pluginContext.irBuiltIns,
+                    "MockK transformation",
+                    IrValidatorConfig(),
+                )
+            }
         }
     }
 }
