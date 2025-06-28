@@ -49,18 +49,14 @@ class MockKIrGenerationExtension(
             EveryComposableElementTransformer(logger, pluginContext),
             VerifyComposableElementTransformer(logger, pluginContext)
         )
-        val beforeTransform = moduleFragment.dump()
         transformers.forEach { transformer -> moduleFragment.transform(transformer, null) }
-        val afterTransform = moduleFragment.dump()
-        if (beforeTransform != afterTransform) {
-            validateIr(messageCollector, IrVerificationMode.ERROR) {
-                performBasicIrValidation(
-                    moduleFragment,
-                    pluginContext.irBuiltIns,
-                    "MockK transformation",
-                    IrValidatorConfig(),
-                )
-            }
+        validateIr(messageCollector, IrVerificationMode.ERROR) {
+            performBasicIrValidation(
+                moduleFragment,
+                pluginContext.irBuiltIns,
+                "MockK transformation",
+                IrValidatorConfig(),
+            )
         }
     }
 }
