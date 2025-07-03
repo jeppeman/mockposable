@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -11,13 +13,13 @@ def isReleaseBuild() {
 def getReleaseRepositoryUrl() {
     return hasProperty('RELEASE_REPOSITORY_URL')
             ? RELEASE_REPOSITORY_URL
-            : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            : "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
 }
 
 def getSnapshotRepositoryUrl() {
     return hasProperty('SNAPSHOT_REPOSITORY_URL')
             ? SNAPSHOT_REPOSITORY_URL
-            : "https://oss.sonatype.org/content/repositories/snapshots/"
+            : "https://ossrh-staging-api.central.sonatype.com/content/repositories/snapshots/"
 }
 
 def getRepositoryUsername() {
@@ -168,4 +170,51 @@ afterEvaluate {
             }
         }
     }
+
+    tasks.register('moveFromOSSRHToCentralPublisherPortal') {
+        doLast {
+            def repoKey = get('search/repositories').repositories[0].key
+            post("upload/repository/$repoKey")
+        }
+    }
+
+    tasks.withType(PublishToMavenRepository) {
+        finalizedBy('moveFromOSSRHToCentralPublisherPortal')
+    }
+}
+
+def request(path, method, body = null) {
+    def url = "https://ossrh-staging-api.central.sonatype.com/manual/$path"
+    def con = new URI("https://ossrh-staging-api.central.sonatype.com/manual/$path").toURL().openConnection()
+    def str = new String(Base64.encoder.encode("${getRepositoryUsername()}:${getRepositoryPassword()}".getBytes()))
+    con.addRequestProperty('Authorization', "Bearer $str")
+    con.setRequestMethod(method)
+    if (method == "POST" || method == "PUT") {
+        con.setDoOutput(true)
+    }
+    if (body != null) {
+        con.outputStream.write(body.getBytes())
+    }
+    def responseCode = con.getResponseCode()
+    if (responseCode >= 200 && responseCode <= 299) {
+        def responseBody = con.inputStream.getText()
+        if (responseBody != null && !responseBody.isEmpty()) {
+            return new JsonSlurper().parseText(responseBody)
+        }
+    } else {
+        def errorBody = con?.errorStream?.getText()
+        if (errorBody != null && !errorBody.isEmpty()) {
+            throw new RuntimeException("$method $url failed: code=$responseCode, body=$errorBody")
+        } else {
+            throw new RuntimeException("$method $url failed: code=$responseCode")
+        }
+    }
+}
+
+def get(path) {
+    return request(path, 'GET')
+}
+
+def post(path, body = null) {
+    return request(path, 'POST', body)
 }
