@@ -1,7 +1,7 @@
 [versions]
-kotlin = '2.2.0'
+kotlin = '2.2.20'
 compose-ui = '1.8.3'
-google-ksp = '2.2.0-2.0.2' # https://mvnrepository.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin?repo=central
+google-ksp = '2.2.20-2.0.3' # https://mvnrepository.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin?repo=central
 activity = '1.10.1'
 agp = '8.9.3'
 espresso = '3.6.1'
