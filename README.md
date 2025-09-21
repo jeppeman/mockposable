@@ -33,7 +33,7 @@ buildscript {
     }
     
     dependencies {
-         classpath 'com.jeppeman.mockposable:mockposable-gradle:0.14'
+         classpath 'com.jeppeman.mockposable:mockposable-gradle:0.15'
     }
 }
 
