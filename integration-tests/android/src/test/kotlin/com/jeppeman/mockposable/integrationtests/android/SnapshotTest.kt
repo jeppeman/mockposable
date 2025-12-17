@@ -33,7 +33,7 @@ class SnapshotTest {
         deviceConfig = DeviceConfig.PIXEL_5,
         theme = "Theme.Material",
         environment = detectEnvironment().copy(
-            compileSdkVersion = 35
+            compileSdkVersion = 36
         )
     )
 

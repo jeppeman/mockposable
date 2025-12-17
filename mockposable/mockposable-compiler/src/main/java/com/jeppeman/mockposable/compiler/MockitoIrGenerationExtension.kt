@@ -4,10 +4,8 @@ package com.jeppeman.mockposable.compiler
 
 import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
-import org.jetbrains.kotlin.backend.common.IrValidatorConfig
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.validateIr
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.toLogger
 import org.jetbrains.kotlin.config.IrVerificationMode
@@ -17,7 +15,10 @@ import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionExpression
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
+import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
+import org.jetbrains.kotlin.ir.validation.IrValidatorConfig
+import org.jetbrains.kotlin.ir.validation.validateIr
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.util.Logger
 
@@ -41,13 +42,17 @@ class MockitoIrGenerationExtension(
             OnComposableElementTransformer(logger, pluginContext),
             MockitoVerifyComposableElementTransformer(logger, pluginContext)
         )
+        val beforeTransform = moduleFragment.dump()
         transformers.forEach { transformer -> moduleFragment.transform(transformer, null) }
-        validateIr(messageCollector, IrVerificationMode.ERROR) {
-            performBasicIrValidation(
-                moduleFragment,
-                pluginContext.irBuiltIns,
-                "Mockito transformation",
-                IrValidatorConfig(),
+        val afterTransform = moduleFragment.dump()
+        if (beforeTransform != afterTransform) {
+            validateIr(
+                element = moduleFragment,
+                irBuiltIns = pluginContext.irBuiltIns,
+                validatorConfig = IrValidatorConfig(),
+                messageCollector = messageCollector,
+                mode = IrVerificationMode.ERROR,
+                phaseName = "Mockito transformation",
             )
         }
     }

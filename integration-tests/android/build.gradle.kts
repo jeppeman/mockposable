@@ -15,12 +15,12 @@ mockposable {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
     namespace = "com.jeppeman.mockposable.integrationtests.android"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        minSdk = 21
+        minSdk = 23
         val taskNames = project.gradle
             .startParameter
             .taskNames
