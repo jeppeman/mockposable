@@ -3,7 +3,6 @@ package com.jeppeman.mockposable.gradle
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradleSubplugin
-import org.jetbrains.kotlin.gradle.model.ComposeCompiler
 import org.jetbrains.kotlin.gradle.plugin.*
 
 @Suppress("unused") // Invoked by gradle
@@ -61,6 +60,12 @@ class MockposableSubPlugin : KotlinCompilerPluginSupportPlugin {
             .dependencies
             .add(project.dependencies.create(COMPOSE_RUNTIME_COORDINATES))
 
+        kotlinCompilation.compileTaskProvider.configure {
+            it.compilerOptions.freeCompilerArgs.add(
+                "-Xcompiler-plugin-order=${COMPOSE_COMPILER_PLUGIN_ID}>${PLUGIN_ID}",
+            )
+        }
+
         project.plugins.apply(ComposeCompilerGradleSubplugin::class.java)
 
         return project.provider {
@@ -73,7 +78,7 @@ class MockposableSubPlugin : KotlinCompilerPluginSupportPlugin {
         }
     }
 
-    override fun getCompilerPluginId(): String = "com.jeppeman.mockposable"
+    override fun getCompilerPluginId(): String = PLUGIN_ID
 
     override fun getPluginArtifact(): SubpluginArtifact = SubpluginArtifact(
         groupId = "com.jeppeman.mockposable",
@@ -84,6 +89,11 @@ class MockposableSubPlugin : KotlinCompilerPluginSupportPlugin {
     override fun isApplicable(
         kotlinCompilation: KotlinCompilation<*>
     ): Boolean = true
+
+    companion object {
+        private const val PLUGIN_ID = "com.jeppeman.mockposable"
+        private const val COMPOSE_COMPILER_PLUGIN_ID = "androidx.compose.compiler.plugins.kotlin"
+    }
 }
 
 private val mockPluginDependencyMap: Map<String, Map<String, List<String>>> = mapOf(

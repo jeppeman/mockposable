@@ -4,10 +4,8 @@ package com.jeppeman.mockposable.compiler
 
 import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
-import org.jetbrains.kotlin.backend.common.IrValidatorConfig
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.validateIr
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.toLogger
 import org.jetbrains.kotlin.config.IrVerificationMode
@@ -26,6 +24,8 @@ import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.getSimpleFunction
+import org.jetbrains.kotlin.ir.validation.IrValidatorConfig
+import org.jetbrains.kotlin.ir.validation.validateIr
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.util.Logger
 
@@ -53,14 +53,14 @@ class MockKIrGenerationExtension(
         transformers.forEach { transformer -> moduleFragment.transform(transformer, null) }
         val afterTransform = moduleFragment.dump()
         if (beforeTransform != afterTransform) {
-            validateIr(messageCollector, IrVerificationMode.ERROR) {
-                performBasicIrValidation(
-                    moduleFragment,
-                    pluginContext.irBuiltIns,
-                    "MockK transformation",
-                    IrValidatorConfig(),
-                )
-            }
+            validateIr(
+                element = moduleFragment,
+                irBuiltIns = pluginContext.irBuiltIns,
+                validatorConfig = IrValidatorConfig(),
+                messageCollector = messageCollector,
+                mode = IrVerificationMode.ERROR,
+                phaseName = "MockK transformation",
+            )
         }
     }
 }

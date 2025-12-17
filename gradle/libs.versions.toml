@@ -1,61 +1,60 @@
 [versions]
-kotlin = '2.2.20'
-compose-ui = '1.8.3'
-google-ksp = '2.2.20-2.0.3' # https://mvnrepository.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin?repo=central
-activity = '1.10.1'
-agp = '8.9.3'
-espresso = '3.6.1'
-mockk = '1.13.12'
-mockito = '4.8.1'
+kotlin = '2.3.0'
+compose-ui = '1.10.0'
+google-ksp = '2.3.3' # https://mvnrepository.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin?repo=central
+activity = '1.12.1'
+agp = '8.11.2'
+espresso = '3.7.0'
+mockk = '1.14.7'
 
 [libraries]
 kotlin-gradle = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version.ref = 'kotlin' }
 kotlin-compiler = { module = 'org.jetbrains.kotlin:kotlin-compiler-embeddable', version.ref = 'kotlin' }
 
 androidx-activity = { module = 'androidx.activity:activity', version.ref = 'activity' }
-androidx-appcompat = { module = 'androidx.appcompat:appcompat', version = '1.7.0' }
+androidx-appcompat = { module = 'androidx.appcompat:appcompat', version = '1.7.1' }
 androidx-activity-compose = { module = 'androidx.activity:activity-compose', version.ref = 'activity' }
-androidx-lifecycle-viewmodel-compose = { module = 'androidx.lifecycle:lifecycle-viewmodel-compose', version = '2.8.7' }
-androidx-test-runner = { module = 'androidx.test:runner', version = '1.6.2'}
+androidx-lifecycle-viewmodel-compose = { module = 'androidx.lifecycle:lifecycle-viewmodel-compose', version = '2.10.0' }
+androidx-test-runner = { module = 'androidx.test:runner', version = '1.7.0' }
 androidx-test-espresso-core = { module = 'androidx.test.espresso:espresso-core', version.ref = 'espresso' }
 androidx-test-annotation = { module = 'androidx.test:annotation', version = '1.0.1' }
-androidx-fragment-testing = { module = 'androidx.fragment:fragment-testing', version = '1.8.6' }
+androidx-fragment-testing = { module = 'androidx.fragment:fragment-testing', version = '1.8.9' }
 
 compose-compiler = { module = 'org.jetbrains.kotlin:kotlin-compose-compiler-plugin-embeddable', version.ref = 'kotlin' }
 compose-compiler-gradle = { module = 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin', version.ref = 'kotlin' }
-compose-runtime = { module = 'org.jetbrains.compose.runtime:runtime', version = '1.6.11' }
+compose-runtime = { module = 'org.jetbrains.compose.runtime:runtime', version = '1.9.3' }
 compose-ui = { module = 'androidx.compose.ui:ui', version.ref = 'compose-ui' }
-compose-material = { module = 'androidx.compose.material:material', version = '1.7.8' }
-compose-foundation = { module = 'androidx.compose.foundation:foundation', version = '1.7.8' }
+compose-material = { module = 'androidx.compose.material:material', version = '1.10.0' }
+compose-foundation = { module = 'androidx.compose.foundation:foundation', version = '1.10.0' }
 compose-ui-test-junit4 = { module = 'androidx.compose.ui:ui-test-junit4', version.ref = 'compose-ui' }
 compose-ui-test-manifest = { module = 'androidx.compose.ui:ui-test-manifest', version.ref = 'compose-ui' }
 
 android-gradle = { module = 'com.android.tools.build:gradle', version.ref = 'agp' }
 
-autoservice-ksp = { module = 'dev.zacsweers.autoservice:auto-service-ksp', version = '1.0.0' }
+autoservice-ksp = { module = 'dev.zacsweers.autoservice:auto-service-ksp', version = '1.2.0' }
 autoservice-annotations = { module = 'com.google.auto.service:auto-service-annotations', version = '1.1.1' }
 
 google-ksp = { module = 'com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin', version.ref = 'google-ksp' }
 
 # compile-testing = { module = 'com.github.tschuchortdev:kotlin-compile-testing', version = '1.5.0' }
-compile-testing = { module = 'dev.zacsweers.kctfork:core', version = '0.7.1' }
+compile-testing = { module = 'dev.zacsweers.kctfork:core', version = '0.12.0' }
 
 junit = { module = 'androidx.test.ext:junit', version = '1.1.3' }
 
-robolectric = { module = 'org.robolectric:robolectric', version = '4.13' }
+robolectric = { module = 'org.robolectric:robolectric', version = '4.16' }
 
-molecule = { module = 'app.cash.molecule:molecule-runtime', version = '2.0.0' }
+molecule = { module = 'app.cash.molecule:molecule-runtime', version = '2.2.0' }
 
 hamcrest = { module = 'org.hamcrest:hamcrest', version = '2.2' }
 
 mockk-core = { module = 'io.mockk:mockk', version.ref = 'mockk' }
 mockk-android = { module = 'io.mockk:mockk-android', version.ref = 'mockk' }
 
-mockito-kotlin = { module = 'org.mockito.kotlin:mockito-kotlin', version = '5.4.0' }
-mockito-inline = { module = 'org.mockito:mockito-inline', version.ref = 'mockito' }
-mockito-android = { module = 'org.mockito:mockito-android', version.ref = 'mockito' }
+mockito-kotlin = { module = 'org.mockito.kotlin:mockito-kotlin', version = '6.1.0' }
+mockito-inline = { module = 'org.mockito:mockito-inline', version = '5.2.0' }
+mockito-android = { module = 'org.mockito:mockito-android', version = '5.21.0' }
 
-paparazzi = { module = 'app.cash.paparazzi:paparazzi-gradle-plugin', version = '1.3.5' }
+paparazzi = { module = 'app.cash.paparazzi:paparazzi-gradle-plugin', version = '2.0.0-alpha02' }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

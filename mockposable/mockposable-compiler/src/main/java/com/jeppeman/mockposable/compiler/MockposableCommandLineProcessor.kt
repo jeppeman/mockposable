@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 
 private const val ARG_NAME_MOCK_PLUGINS = "plugins"
+const val MOCKPOSABLE_PLUGIN_ID = "com.jeppeman.mockposable"
 
 val KEY_MOCK_PLUGINS = CompilerConfigurationKey<String>(ARG_NAME_MOCK_PLUGINS)
 
@@ -16,7 +17,7 @@ val KEY_MOCK_PLUGINS = CompilerConfigurationKey<String>(ARG_NAME_MOCK_PLUGINS)
 @Suppress("unused") // Invoked by the compiler
 @AutoService(CommandLineProcessor::class)
 class MockposableCommandLineProcessor : CommandLineProcessor {
-    override val pluginId: String = "com.jeppeman.mockposable"
+    override val pluginId: String = MOCKPOSABLE_PLUGIN_ID
 
     override val pluginOptions: Collection<AbstractCliOption> = listOf(
         CliOption(ARG_NAME_MOCK_PLUGINS, "String", "", required = true)

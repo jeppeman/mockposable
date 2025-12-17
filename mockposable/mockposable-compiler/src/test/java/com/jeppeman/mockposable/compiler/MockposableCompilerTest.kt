@@ -92,12 +92,11 @@ fun compile(
     val mockposableCommandLineProcessor = MockposableCommandLineProcessor()
     val composeCommandLineProcessor = ComposeCommandLineProcessor()
     return KotlinCompilation().apply {
-        languageVersion = "2.0"
         sources = sourceFiles
         jvmTarget = JvmTarget.JVM_21.description
+        verbose = true
         commandLineProcessors = listOf(mockposableCommandLineProcessor, composeCommandLineProcessor)
-        componentRegistrars = listOf(MockposablePlugin())
-        compilerPluginRegistrars = listOf(ComposePluginRegistrar())
+        compilerPluginRegistrars = listOf(ComposePluginRegistrar(), MockposablePlugin())
         pluginOptions = listOf(
             PluginOption(
                 pluginId = mockposableCommandLineProcessor.pluginId,

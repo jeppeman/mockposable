@@ -6,24 +6,19 @@ import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSourceLocation
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.cli.common.messages.toLogger
-import org.jetbrains.kotlin.com.intellij.mock.MockProject
-import org.jetbrains.kotlin.com.intellij.openapi.extensions.LoadingOrder
-import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
+import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
 @OptIn(ExperimentalCompilerApi::class)
 @Suppress("unused") // Invoked by kotlinc
-@AutoService(ComponentRegistrar::class)
-class MockposablePlugin : ComponentRegistrar {
+@AutoService(CompilerPluginRegistrar::class)
+class MockposablePlugin : CompilerPluginRegistrar() {
+    override val pluginId: String = MOCKPOSABLE_PLUGIN_ID
     override val supportsK2: Boolean
         get() = true
 
-    override fun registerProjectComponents(
-        project: MockProject,
-        configuration: CompilerConfiguration
-    ) {
+    override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
         val plugins = configuration.get(KEY_MOCK_PLUGINS, "").split(";")
         val messageCollector = MockposableMessageCollector(
             configuration.get(
@@ -36,7 +31,7 @@ class MockposablePlugin : ComponentRegistrar {
             // No extra transformations needed for compose-ui
             if (extension == "compose-ui") continue
 
-            project.registerIrLast(
+            IrGenerationExtension.registerExtension(
                 when (extension) {
                     "mockito" -> MockitoIrGenerationExtension(messageCollector)
                     "mockk" -> MockKIrGenerationExtension(messageCollector)
@@ -45,11 +40,6 @@ class MockposablePlugin : ComponentRegistrar {
             )
         }
     }
-}
-
-private fun MockProject.registerIrLast(extension: IrGenerationExtension) {
-    extensionArea.getExtensionPoint(IrGenerationExtension.extensionPointName)
-        .registerExtension(extension, LoadingOrder.LAST, this)
 }
 
 private class MockposableMessageCollector(
