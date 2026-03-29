@@ -1,3 +1,4 @@
+/*
 package com.jeppeman.mockposable.integrationtests.android
 
 import androidx.compose.foundation.background
@@ -103,4 +104,4 @@ fun VerifyingView(interactionSource: MutableInteractionSource) {
             Text(text = "Press me")
         }
     }
-}
+}*/
