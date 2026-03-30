@@ -20,6 +20,7 @@ buildscript {
 plugins {
     kotlin("jvm") version libs.versions.kotlin.get() apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
 }
 
 allprojects {
