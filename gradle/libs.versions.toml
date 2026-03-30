@@ -58,3 +58,4 @@ paparazzi = { module = 'app.cash.paparazzi:paparazzi-gradle-plugin', version = '
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

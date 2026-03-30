@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionExpression
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
-import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.validation.IrValidatorConfig
 import org.jetbrains.kotlin.ir.validation.validateIr
@@ -41,19 +40,15 @@ class MockitoIrGenerationExtension(
             OnComposableElementTransformer(logger, pluginContext),
             MockitoVerifyComposableElementTransformer(logger, pluginContext)
         )
-        val beforeTransform = moduleFragment.dump()
         transformers.forEach { transformer -> moduleFragment.transform(transformer, null) }
-        val afterTransform = moduleFragment.dump()
-        if (beforeTransform != afterTransform) {
-            validateIr(
-                element = moduleFragment,
-                irBuiltIns = pluginContext.irBuiltIns,
-                validatorConfig = IrValidatorConfig(),
-                messageCollector = messageCollector,
-                mode = IrVerificationMode.ERROR,
-                phaseName = "Mockito transformation",
-            )
-        }
+        validateIr(
+            element = moduleFragment,
+            irBuiltIns = pluginContext.irBuiltIns,
+            validatorConfig = IrValidatorConfig(),
+            messageCollector = messageCollector,
+            mode = IrVerificationMode.ERROR,
+            phaseName = "Mockito transformation",
+        )
     }
 }
 

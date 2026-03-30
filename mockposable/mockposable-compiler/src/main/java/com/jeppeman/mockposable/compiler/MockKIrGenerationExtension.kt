@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.ir.expressions.IrFunctionExpression
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.classOrNull
-import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.getSimpleFunction
@@ -47,19 +46,15 @@ class MockKIrGenerationExtension(
             EveryComposableElementTransformer(logger, pluginContext),
             VerifyComposableElementTransformer(logger, pluginContext)
         )
-        val beforeTransform = moduleFragment.dump()
         transformers.forEach { transformer -> moduleFragment.transform(transformer, null) }
-        val afterTransform = moduleFragment.dump()
-        if (beforeTransform != afterTransform) {
-            validateIr(
-                element = moduleFragment,
-                irBuiltIns = pluginContext.irBuiltIns,
-                validatorConfig = IrValidatorConfig(),
-                messageCollector = messageCollector,
-                mode = IrVerificationMode.ERROR,
-                phaseName = "MockK transformation",
-            )
-        }
+        validateIr(
+            element = moduleFragment,
+            irBuiltIns = pluginContext.irBuiltIns,
+            validatorConfig = IrValidatorConfig(),
+            messageCollector = messageCollector,
+            mode = IrVerificationMode.ERROR,
+            phaseName = "MockK transformation",
+        )
     }
 }
 
