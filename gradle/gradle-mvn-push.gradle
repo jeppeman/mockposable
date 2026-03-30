@@ -30,59 +30,62 @@ def getRepositoryPassword() {
     return hasProperty('SONATYPE_NEXUS_PASSWORD') ? SONATYPE_NEXUS_PASSWORD : ""
 }
 
-components.configureEach {
-    if (it.name == "release" && (project.getPlugins().hasPlugin('com.android.application') ||
-            project.getPlugins().hasPlugin('com.android.library'))) {
-        publishing {
-            publications {
-                aar(MavenPublication) {
-                    version = version
-                    groupId = GROUP
+afterEvaluate {
+    components.configureEach {
+        if (it.name == "release" && (project.getPlugins().hasPlugin('com.android.application') ||
+                project.getPlugins().hasPlugin('com.android.library'))) {
+            publishing {
+                publications {
+                    aar(MavenPublication) {
+                        version = version
+                        groupId = GROUP
 
-                    from components.findByName("release")
+                        from components.findByName("release")
 
-                    pom {
-                        name = POM_NAME
-                        description = POM_DESCRIPTION
-                        url = POM_URL
-                        packaging = POM_PACKAGING
+                        pom {
+                            name = POM_NAME
+                            description = POM_DESCRIPTION
+                            url = POM_URL
+                            packaging = POM_PACKAGING
 
-                        scm {
-                            url = POM_SCM_URL
-                            connection = POM_SCM_CONNECTION
-                            developerConnection = POM_SCM_DEV_CONNECTION
-                        }
+                            scm {
+                                url = POM_SCM_URL
+                                connection = POM_SCM_CONNECTION
+                                developerConnection = POM_SCM_DEV_CONNECTION
+                            }
 
-                        licenses {
-                            license {
-                                name = POM_LICENCE_NAME
-                                url = POM_LICENCE_URL
-                                distribution = POM_LICENCE_DIST
+                            licenses {
+                                license {
+                                    name = POM_LICENCE_NAME
+                                    url = POM_LICENCE_URL
+                                    distribution = POM_LICENCE_DIST
+                                }
+                            }
+
+                            developers {
+                                developer {
+                                    id = POM_DEVELOPER_ID
+                                    name = POM_DEVELOPER_NAME
+                                }
                             }
                         }
 
-                        developers {
-                            developer {
-                                id = POM_DEVELOPER_ID
-                                name = POM_DEVELOPER_NAME
-                            }
-                        }
+                        alias false
+                        artifactId = POM_ARTIFACT_ID
                     }
-
-                    alias false
-                    artifactId = POM_ARTIFACT_ID
                 }
             }
-        }
 
-        if (isReleaseBuild()) {
-            signing {
-                required { isReleaseBuild() && gradle.taskGraph.hasTask("publish") }
-                sign publishing.publications.findAll { it.name.endsWith("aar") } as Publication[]
+            if (isReleaseBuild()) {
+                signing {
+                    required { isReleaseBuild() && gradle.taskGraph.hasTask("publish") }
+                    sign publishing.publications.findAll { it.name.endsWith("aar") } as Publication[]
+                }
             }
         }
     }
 }
+
 
 afterEvaluate {
     if (project.getPlugins().hasPlugin('com.android.application') ||

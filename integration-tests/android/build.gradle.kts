@@ -4,10 +4,9 @@ import com.jeppeman.mockposable.gradle.COMPOSE_UI
 
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     alias(libs.plugins.compose.compiler)
     id("com.jeppeman.mockposable")
-    id("app.cash.paparazzi")
+//    id("app.cash.paparazzi")
 }
 
 mockposable {
