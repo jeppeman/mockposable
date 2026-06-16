@@ -1,8 +1,5 @@
-@file:OptIn(DeprecatedForRemovalCompilerApi::class)
-
 package com.jeppeman.mockposable.compiler
 
-import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -104,15 +101,15 @@ private fun IrFunctionExpression.transformAllComposableCalls(
             // Transforming $composer to any<Composer?>($composer)
             { composerValueArgument ->
                 irCall(anyMatcherFunction).apply {
-                    putTypeArgument(0, composerValueArgument.type)
-                    putValueArgument(0, composerValueArgument)
+                    typeArguments[0] = composerValueArgument.type
+                    arguments[0] = composerValueArgument
                 }
             },
             // Transforming $composer to any<Int>($changed)
             { changedValueArgument ->
                 irCall(anyMatcherFunction).apply {
-                    putTypeArgument(0, changedValueArgument.type)
-                    putValueArgument(0, changedValueArgument)
+                    typeArguments[0] = changedValueArgument.type
+                    arguments[0] = changedValueArgument
                 }
             },
             logger
