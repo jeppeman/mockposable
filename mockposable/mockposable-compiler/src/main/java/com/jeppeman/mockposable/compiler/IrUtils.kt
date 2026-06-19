@@ -1,8 +1,5 @@
-@file:OptIn(DeprecatedForRemovalCompilerApi::class)
-
 package com.jeppeman.mockposable.compiler
 
-import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrElement
@@ -126,11 +123,11 @@ data class IrStatementWithParent(val statement: IrStatement, val parent: IrEleme
 fun IrCall.extractComposableCallFromBlockArg(
     name: String,
 ): IrFunctionExpression {
-    val composableBlockValueParameter = symbol.owner.valueParameters.find { valueParameter ->
+    val composableBlockValueParameter = symbol.owner.parameters.find { valueParameter ->
         valueParameter.name.asString() == name
     } ?: pluginError("Failed to find @Composable function in lambda from $name.")
 
-    val composableBlockValueArgument = getValueArgument(composableBlockValueParameter.index)
+    val composableBlockValueArgument = arguments[composableBlockValueParameter]
         ?: pluginError("No value argument found for ${composableBlockValueParameter.name}.")
 
     return composableBlockValueArgument.run {
@@ -162,13 +159,13 @@ private fun IrExpression.extractComposableLambdaInstance(
     is IrCall -> when (symbol.owner.name.asString()) {
         // If this branch is matched we found a composableLambdaInstance(key, tracked, block = @Composable { ... })
         "composableLambdaInstance", "composableLambda" -> {
-            val blockValueParameter = symbol.owner.valueParameters.find { valueParameter ->
+            val blockValueParameter = symbol.owner.parameters.find { valueParameter ->
                 valueParameter.name.asString() == composableLambdaBlockParameterName
             } ?: pluginError(
-                "Failed to find @Composable block in composableLambdaInstance from $composableLambdaBlockParameterName}. Parameter names were: ${symbol.owner.valueParameters.map { it.name }}."
+                "Failed to find @Composable block in composableLambdaInstance from $composableLambdaBlockParameterName}. Parameter names were: ${symbol.owner.parameters.map { it.name }}."
             )
 
-            val valueArgument = getValueArgument(blockValueParameter.index)
+            val valueArgument = arguments[blockValueParameter]
                 ?: pluginError("No value argument found for ${blockValueParameter.name}.")
             valueArgument.cast<IrFunctionExpression>() ?: pluginError(
                 "Assumed wrong type for value argument ${blockValueParameter.name}, expected ${IrFunctionExpression::class.java.name}, got ${valueArgument::class.java.name}."
@@ -219,11 +216,11 @@ fun IrCall.transformComposeArgs(
 
     val composerType = pluginContext.composerClassSymbol.defaultType.makeNullable()
 
-    val composerArgIndex = (0 until valueArgumentsCount)
-        .mapNotNull { index -> getValueArgument(index)?.let { index to it } }
+    val composerArgIndex = arguments.indices
+        .mapNotNull { index -> arguments[index]?.let { index to it } }
         .find { (_, arg) -> arg.type == composerType }
         ?.first
-    val composerArgMissing = symbol.owner.valueParameters.none {
+    val composerArgMissing = symbol.owner.parameters.none {
         it.type.makeNullable() == composerType
     }
 
@@ -234,20 +231,14 @@ fun IrCall.transformComposeArgs(
         )
     }
 
-    putValueArgument(
-        composerArgIndex,
-        pluginContext.buildIr(symbol) {
-            composerArgument(getValueArgument(composerArgIndex)!!)
-        }
-    )
+    arguments[composerArgIndex] = pluginContext.buildIr(symbol) {
+        composerArgument(arguments[composerArgIndex]!!)
+    }
 
     // $changed is always added as following $composer
-    putValueArgument(
-        composerArgIndex + 1,
-        pluginContext.buildIr(symbol) {
-            changedArgument(getValueArgument(composerArgIndex + 1)!!)
-        }
-    )
+    arguments[composerArgIndex + 1] = pluginContext.buildIr(symbol) {
+        changedArgument(arguments[composerArgIndex + 1]!!)
+    }
 
     val afterTransform = dumpKotlinLike()
     logger.log("Transformed $beforeTransform -> $afterTransform")

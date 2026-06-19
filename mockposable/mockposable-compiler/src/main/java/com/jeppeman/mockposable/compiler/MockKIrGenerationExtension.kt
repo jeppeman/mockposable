@@ -1,8 +1,5 @@
-@file:OptIn(DeprecatedForRemovalCompilerApi::class)
-
 package com.jeppeman.mockposable.compiler
 
-import org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -11,6 +8,7 @@ import org.jetbrains.kotlin.config.IrVerificationMode
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
+import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
@@ -72,7 +70,8 @@ private abstract class MockKCallTransformer(
         val composableBlock = expression
             .extractComposableCallFromBlockArg(composableBlockParameterName)
 
-        val mockKMatcherScope = composableBlock.function.extensionReceiverParameter
+        val mockKMatcherScope = composableBlock.function.parameters
+            .find { it.kind == IrParameterKind.ExtensionReceiver }
             ?: pluginError(
                 "Expected an extensionReceiverParameter for function ${composableBlock.function.dumpKotlinLike()}, but was null."
             )
@@ -125,14 +124,14 @@ private fun IrFunctionExpression.transformAllComposableCalls(
             { composerValueArgument ->
                 irCall(anyMatcherFunction).apply {
                     dispatchReceiver = irGet(mockKScope)
-                    putTypeArgument(0, composerValueArgument.type)
+                    typeArguments[0] = composerValueArgument.type
                 }
             },
             // Transforming $changed to any<Int>()
             { changedValueArgument ->
                 irCall(anyMatcherFunction).apply {
                     dispatchReceiver = irGet(mockKScope)
-                    putTypeArgument(0, changedValueArgument.type)
+                    typeArguments[0] = changedValueArgument.type
                 }
             },
             logger
