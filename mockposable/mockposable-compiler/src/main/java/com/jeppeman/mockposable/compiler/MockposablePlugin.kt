@@ -10,9 +10,10 @@ import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.config.MessageCollectorAccess
 import org.jetbrains.kotlin.util.Logger
 
-@OptIn(ExperimentalCompilerApi::class)
+@OptIn(ExperimentalCompilerApi::class, MessageCollectorAccess::class)
 @Suppress("unused") // Invoked by kotlinc
 @AutoService(CompilerPluginRegistrar::class)
 class MockposablePlugin : CompilerPluginRegistrar() {

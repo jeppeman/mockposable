@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.util.Logger
  * verify these calls with Mockito.
  */
 class MockitoIrGenerationExtension(
-    private val messageCollector: MessageCollector,
+    messageCollector: MessageCollector,
     private val logger: Logger = messageCollector.toLogger(),
 ) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
@@ -42,7 +42,7 @@ class MockitoIrGenerationExtension(
             element = moduleFragment,
             irBuiltIns = pluginContext.irBuiltIns,
             validatorConfig = IrValidatorConfig(),
-            messageCollector = messageCollector,
+            diagnosticReporter = pluginContext.diagnosticReporter,
             mode = IrVerificationMode.ERROR,
             phaseName = "Mockito transformation",
         )

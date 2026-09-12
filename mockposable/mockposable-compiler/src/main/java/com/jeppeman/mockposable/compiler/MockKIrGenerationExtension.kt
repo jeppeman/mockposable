@@ -35,7 +35,7 @@ import org.jetbrains.kotlin.util.Logger
  * verify these calls with Mockk.
  */
 class MockKIrGenerationExtension(
-    private val messageCollector: MessageCollector,
+    messageCollector: MessageCollector,
     private val logger: Logger = messageCollector.toLogger(),
 ) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
@@ -49,7 +49,7 @@ class MockKIrGenerationExtension(
             element = moduleFragment,
             irBuiltIns = pluginContext.irBuiltIns,
             validatorConfig = IrValidatorConfig(),
-            messageCollector = messageCollector,
+            diagnosticReporter = pluginContext.diagnosticReporter,
             mode = IrVerificationMode.ERROR,
             phaseName = "MockK transformation",
         )
